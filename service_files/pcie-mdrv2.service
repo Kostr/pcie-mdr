@@ -1,0 +1,13 @@
+[Unit]
+Description=BMC PCIe MDRV2
+After=xyz.openbmc_project.EntityManager.service
+
+[Service]
+Restart=always
+RestartSec=5
+StartLimitBurst=10
+ExecStartPre=/bin/mkdir -p /var/lib/pcie
+ExecStart=/usr/bin/pciemdrv2app
+
+[Install]
+WantedBy=multi-user.target

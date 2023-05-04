@@ -1,0 +1,23 @@
+#pragma once
+
+#include <cstdint>
+
+static constexpr const char* mdrType2File = "/var/lib/pcie/pcie";
+static constexpr const char* pciePath = "/var/lib/pcie";
+constexpr uint8_t mdrTypeII = 2;
+
+constexpr uint32_t pcieTableStorageSize = 64 * 1024;
+
+struct MDRPCIeHeader
+{
+    uint8_t dirVer;
+    uint8_t mdrType;
+    uint32_t timestamp;
+    uint32_t dataSize;
+} __attribute__((packed));
+
+constexpr const char* PCIeMdrV2Service = "xyz.openbmc_project.PCIe.MDRV2";
+constexpr const char* PCIeMdrV2Path = "/xyz/openbmc_project/PCIe_MDRV2";
+constexpr const char* PCIeMdrV2Interface = "xyz.openbmc_project.PCIe_MDRV2";
+constexpr const char* PCIeMdrV2UpdateFunctionName = "UpdateMappingsFromFile";
+constexpr const char* PCIeDevicesPath = "/xyz/openbmc_project/inventory/pcie";
