@@ -533,6 +533,7 @@ static boost::container::flat_map<int, std::string> pciVendors{
     {0x149D, "NewTek"},
     {0x1933, "Nexcom International"},
     {0x1DBB, "NGD Systems, Inc."},
+    {0x1C63, "NICEVT JSC"},
     {0x1BB2, "Nikon Corporation"},
     {0x12E1, "Nintendo Co., Ltd."},
     {0x13B8, "Nokia Solutions and Networks"},
