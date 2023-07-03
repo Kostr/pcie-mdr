@@ -49,10 +49,14 @@ target_link_libraries (pciemdrv2app ${DBUSINTERFACE_LIBRARIES})
 target_link_libraries (pciemdrv2app ${SDBUSPLUSPLUS_LIBRARIES})
 target_link_libraries (pciemdrv2app phosphor_logging)
 
+if (NOT DEFINED SYSTEMD_SYSTEM_UNIT_DIR)
+    pkg_get_variable(SYSTEMD_SYSTEM_UNIT_DIR systemd systemdsystemunitdir)
+endif()
+
 install (TARGETS pciemdrv2app DESTINATION bin)
 
 install (FILES  ${PROJECT_SOURCE_DIR}/service_files/pcie-mdrv2.service
-    DESTINATION /lib/systemd/system/)
+    DESTINATION "${SYSTEMD_SYSTEM_UNIT_DIR}")
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/src/pcie-ipmi-blobs)
 add_library (pciestore SHARED src/pcie-ipmi-blobs/handler.cpp
