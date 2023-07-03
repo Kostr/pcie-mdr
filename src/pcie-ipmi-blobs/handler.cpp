@@ -219,6 +219,7 @@ bool PcieBlobHandler::commit(uint16_t session, const std::vector<uint8_t>& data)
         pcieFile.write(reinterpret_cast<char*>(&mdrHdr), sizeof(MDRPCIeHeader));
         pcieFile.write(reinterpret_cast<char*>(blobPtr->buffer.data()),
                        blobPtr->buffer.size());
+        pcieFile.close();
         blobPtr->state |= blobs::StateFlags::committing;
     }
     catch (const std::ofstream::failure& e)
