@@ -77,28 +77,33 @@ void PcieDevice::pcieInfoUpdate()
             pcie_device::deviceType("MultiFunction");
         else
             pcie_device::deviceType("SingleFunction");
-        setPropertyByName("Function" + std::to_string(i) + "DeviceId",
-                          getStringFromData(sizeof(PCIheaderType0->deviceId),
-                                            PCIheaderType0->deviceId));
-        setPropertyByName("Function" + std::to_string(i) + "VendorId",
-                          getStringFromData(sizeof(PCIheaderType0->vendorId),
-                                            PCIheaderType0->vendorId));
-        setPropertyByName("Function" + std::to_string(i) + "ClassCode",
-                          getStringFromData(3, PCIheaderType0->classCode));
-        setPropertyByName(
+        pcie_device::setPropertyByName(
+            "Function" + std::to_string(i) + "DeviceId",
+            getStringFromData(sizeof(PCIheaderType0->deviceId),
+                              PCIheaderType0->deviceId));
+        pcie_device::setPropertyByName(
+            "Function" + std::to_string(i) + "VendorId",
+            getStringFromData(sizeof(PCIheaderType0->vendorId),
+                              PCIheaderType0->vendorId));
+        pcie_device::setPropertyByName(
+            "Function" + std::to_string(i) + "ClassCode",
+            getStringFromData(3, PCIheaderType0->classCode));
+        pcie_device::setPropertyByName(
             "Function" + std::to_string(i) + "DeviceClass",
             pciDeviceClasses
                 .try_emplace((PCIheaderType0->classCode) >> 16, otherClass)
                 .first->second);
         // Set the function type always to physical for now
-        setPropertyByName("Function" + std::to_string(i) + "FunctionType",
-                          "Physical");
-        setPropertyByName("Function" + std::to_string(i) + "RevisionId",
-                          getStringFromData(1, PCIheaderType0->revisionId));
-        setPropertyByName("Function" + std::to_string(i) + "SubsystemId",
-                          getStringFromData(sizeof(PCIheaderType0->subsystemId),
-                                            PCIheaderType0->subsystemId));
-        setPropertyByName(
+        pcie_device::setPropertyByName(
+            "Function" + std::to_string(i) + "FunctionType", "Physical");
+        pcie_device::setPropertyByName(
+            "Function" + std::to_string(i) + "RevisionId",
+            getStringFromData(1, PCIheaderType0->revisionId));
+        pcie_device::setPropertyByName(
+            "Function" + std::to_string(i) + "SubsystemId",
+            getStringFromData(sizeof(PCIheaderType0->subsystemId),
+                              PCIheaderType0->subsystemId));
+        pcie_device::setPropertyByName(
             "Function" + std::to_string(i) + "SubsystemVendorId",
             getStringFromData(sizeof(PCIheaderType0->subsystemVendorId),
                               PCIheaderType0->subsystemVendorId));

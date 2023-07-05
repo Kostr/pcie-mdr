@@ -1,6 +1,7 @@
 #pragma once
 #include "mdrv2.hpp"
 
+#include <xyz/openbmc_project/Inventory/Decorator/Asset/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/PCIeDevice/server.hpp>
 
 #include <cstdint>
@@ -57,8 +58,12 @@ constexpr int pcieFunctionsSize = 8;
 
 using pcie_device =
     sdbusplus::xyz::openbmc_project::Inventory::Item::server::PCIeDevice;
+using asset =
+    sdbusplus::xyz::openbmc_project::Inventory::Decorator::server::Asset;
 
-class PcieDevice : sdbusplus::server::object_t<pcie_device>
+class PcieDevice :
+    sdbusplus::server::object_t<pcie_device>,
+    sdbusplus::server::object_t<asset>
 {
   public:
     PcieDevice() = delete;
@@ -69,7 +74,8 @@ class PcieDevice : sdbusplus::server::object_t<pcie_device>
     ~PcieDevice() = default;
 
     PcieDevice(sdbusplus::bus_t& bus, const std::string& objPath) :
-        sdbusplus::server::object_t<pcie_device>(bus, objPath.c_str())
+        sdbusplus::server::object_t<pcie_device>(bus, objPath.c_str()),
+        sdbusplus::server::object_t<asset>(bus, objPath.c_str())
     {
         for (int i = 0; i < pcieFunctionsSize; i++)
             configData[i] = nullptr;
