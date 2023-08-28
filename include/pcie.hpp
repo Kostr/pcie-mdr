@@ -3,6 +3,7 @@
 
 #include <xyz/openbmc_project/Inventory/Decorator/Asset/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/PCIeDevice/server.hpp>
+#include <xyz/openbmc_project/Inventory/Item/PCIeSlot/server.hpp>
 
 #include <cstdint>
 #include <map>
@@ -57,9 +58,9 @@ constexpr int configSpaceSize = 256;
 constexpr int pcieFunctionsSize = 8;
 
 using pcie_device =
-    sdbusplus::xyz::openbmc_project::Inventory::Item::server::PCIeDevice;
+    sdbusplus::server::xyz::openbmc_project::inventory::item::PCIeDevice;
 using asset =
-    sdbusplus::xyz::openbmc_project::Inventory::Decorator::server::Asset;
+    sdbusplus::server::xyz::openbmc_project::inventory::decorator::Asset;
 
 class PcieDevice :
     sdbusplus::server::object_t<pcie_device>,

@@ -20,28 +20,28 @@ std::string getStringFromData(const int& size, const uint32_t& data,
     return dataStream.str();
 }
 
-sdbusplus::xyz::openbmc_project::Inventory::Item::server::PCIeSlot::Generations
+sdbusplus::server::xyz::openbmc_project::inventory::item::PCIeSlot::Generations
     linkSpeed(uint32_t speed)
 {
     switch (speed)
     {
         case 1:
-            return sdbusplus::xyz::openbmc_project::Inventory::Item::server::
+            return sdbusplus::server::xyz::openbmc_project::inventory::item::
                 PCIeSlot::Generations::Gen1;
         case 2:
-            return sdbusplus::xyz::openbmc_project::Inventory::Item::server::
+            return sdbusplus::server::xyz::openbmc_project::inventory::item::
                 PCIeSlot::Generations::Gen2;
         case 3:
-            return sdbusplus::xyz::openbmc_project::Inventory::Item::server::
+            return sdbusplus::server::xyz::openbmc_project::inventory::item::
                 PCIeSlot::Generations::Gen3;
         case 4:
-            return sdbusplus::xyz::openbmc_project::Inventory::Item::server::
+            return sdbusplus::server::xyz::openbmc_project::inventory::item::
                 PCIeSlot::Generations::Gen4;
         case 5:
-            return sdbusplus::xyz::openbmc_project::Inventory::Item::server::
+            return sdbusplus::server::xyz::openbmc_project::inventory::item::
                 PCIeSlot::Generations::Gen5;
         default:
-            return sdbusplus::xyz::openbmc_project::Inventory::Item::server::
+            return sdbusplus::server::xyz::openbmc_project::inventory::item::
                 PCIeSlot::Generations::Unknown;
     }
 }
@@ -124,10 +124,10 @@ void PcieDevice::pcieInfoUpdate()
         else
         {
             // Keep in mind that Unknown is not a possible value for Redfish
-            generationInUse(sdbusplus::xyz::openbmc_project::Inventory::Item::
-                                server::PCIeSlot::Generations::Unknown);
+            generationInUse(sdbusplus::server::xyz::openbmc_project::inventory::
+                                item::PCIeSlot::Generations::Unknown);
             generationSupported(
-                sdbusplus::xyz::openbmc_project::Inventory::Item::server::
+                sdbusplus::server::xyz::openbmc_project::inventory::item::
                     PCIeSlot::Generations::Unknown);
             maxLanes(0);
             lanesInUse(0);
