@@ -28,8 +28,8 @@ typedef struct
     uint16_t deviceId;
     uint16_t command;
     uint16_t status;
-    uint32_t revisionId : 8;
-    uint32_t classCode : 24;
+    uint32_t revisionId:8;
+    uint32_t classCode:24;
     uint8_t cacheLineSize;
     uint8_t latencyTimer;
     uint8_t headerType;
@@ -38,14 +38,14 @@ typedef struct
     uint16_t subsystemVendorId;
     uint16_t subsystemId;
     uint32_t expROMaddr;
-    uint32_t capabilityPtr : 8;
-    uint32_t reserved : 24;
+    uint32_t capabilityPtr:8;
+    uint32_t reserved:24;
 } PCIHeaderType0;
 
 // Some defines from Linux pci.h
-#define PCI_CAP_ID_NULL 0x00 /* Null Capability */
-#define PCI_CAP_ID_EXP 0x10  /* PCI Express */
-#define PCI_CAP_LIST_NEXT 1  /* Next capability in the list */
+#define PCI_CAP_ID_NULL 0x00         /* Null Capability */
+#define PCI_CAP_ID_EXP 0x10          /* PCI Express */
+#define PCI_CAP_LIST_NEXT 1          /* Next capability in the list */
 
 #define PCI_EXP_LNKCAP 0xc           /* Link Capabilities */
 #define PCI_EXP_LNKCAP_SPEED 0x0000f /* Maximum Link Speed */
