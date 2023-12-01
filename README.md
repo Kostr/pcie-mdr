@@ -30,14 +30,9 @@ S = "${WORKDIR}/git"
 
 SYSTEMD_SERVICE:${PN} += "pcie-mdrv2.service"
 
-inherit cmake pkgconfig systemd
-inherit obmc-phosphor-ipmiprovider-symlink
+inherit meson pkgconfig systemd
 
-FILES:${PN}:append = " ${libdir}/ipmid-providers/lib*${SOLIBS}"
-FILES:${PN}:append = " ${libdir}/blob-ipmid/lib*${SOLIBS}"
-FILES:${PN}-dev:append = " ${libdir}/ipmid-providers/lib*${SOLIBSDEV}"
-
-BLOBIPMI_PROVIDER_LIBRARY += "libpciestore.so"
+FILES:${PN} += "${libdir}/blob-ipmid"
 ```
 
 Change `SRCREV` to point to the latest commit in the `pcie-mdr` repository.
