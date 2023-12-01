@@ -135,5 +135,6 @@ void PcieDevice::pcieInfoUpdate()
         manufacturer(
             pciVendors.try_emplace(PCIheaderType0->vendorId, otherVendor)
                 .first->second);
+        functional(true);
     }
 }

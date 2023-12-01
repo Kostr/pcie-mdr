@@ -4,6 +4,7 @@
 #include <xyz/openbmc_project/Inventory/Decorator/Asset/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/PCIeDevice/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/PCIeSlot/server.hpp>
+#include <xyz/openbmc_project/State/Decorator/OperationalStatus/server.hpp>
 
 #include <cstdint>
 #include <map>
@@ -61,10 +62,13 @@ using pcie_device =
     sdbusplus::server::xyz::openbmc_project::inventory::item::PCIeDevice;
 using asset =
     sdbusplus::server::xyz::openbmc_project::inventory::decorator::Asset;
+using state = sdbusplus::server::xyz::openbmc_project::state::decorator::
+    OperationalStatus;
 
 class PcieDevice :
     sdbusplus::server::object_t<pcie_device>,
-    sdbusplus::server::object_t<asset>
+    sdbusplus::server::object_t<asset>,
+    sdbusplus::server::object_t<state>
 {
   public:
     PcieDevice() = delete;
@@ -76,7 +80,8 @@ class PcieDevice :
 
     PcieDevice(sdbusplus::bus_t& bus, const std::string& objPath) :
         sdbusplus::server::object_t<pcie_device>(bus, objPath.c_str()),
-        sdbusplus::server::object_t<asset>(bus, objPath.c_str())
+        sdbusplus::server::object_t<asset>(bus, objPath.c_str()),
+        sdbusplus::server::object_t<state>(bus, objPath.c_str())
     {
         for (int i = 0; i < pcieFunctionsSize; i++)
             configData[i] = nullptr;
