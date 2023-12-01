@@ -35,7 +35,7 @@ bool readDataFromFlash(MDRPCIeHeader* mdrHdr, uint8_t* data)
     }
     pcieFile.clear();
     pcieFile.seekg(0, std::ios_base::end);
-    int fileLength = pcieFile.tellg();
+    size_t fileLength = pcieFile.tellg();
     pcieFile.seekg(0, std::ios_base::beg);
     if (fileLength < sizeof(MDRPCIeHeader))
     {
@@ -101,8 +101,6 @@ bool updateMappingsFromFile(sdbusplus::bus_t& bus)
         uint8_t* PCIConfigSpace = dataStorage + offset + sizeof(PCIHeaderMDRV);
 
         offset += (sizeof(PCIHeaderMDRV) + configSpaceSize);
-        auto PCIheaderType0 =
-            reinterpret_cast<const PCIHeaderType0*>(PCIConfigSpace);
 
         uint8_t bus_addr = PCIheaderMDRV->bus;
         uint8_t device_addr = PCIheaderMDRV->device;

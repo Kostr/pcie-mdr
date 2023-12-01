@@ -72,7 +72,7 @@ std::vector<std::string> PcieBlobHandler::getBlobIds()
     return std::vector<std::string>(1, blobId);
 }
 
-bool PcieBlobHandler::deleteBlob(const std::string& path)
+bool PcieBlobHandler::deleteBlob(const std::string& /* path */)
 {
     return false;
 }
@@ -109,8 +109,9 @@ bool PcieBlobHandler::open(uint16_t session, uint16_t flags,
     return true;
 }
 
-std::vector<uint8_t> PcieBlobHandler::read(uint16_t session, uint32_t offset,
-                                           uint32_t requestedSize)
+std::vector<uint8_t> PcieBlobHandler::read(uint16_t /* session */,
+                                           uint32_t /* offset */,
+                                           uint32_t /* requestedSize */)
 {
     /* PCIe blob handler does not support read. */
     return std::vector<uint8_t>();
@@ -155,8 +156,8 @@ bool PcieBlobHandler::write(uint16_t session, uint32_t offset,
     return true;
 }
 
-bool PcieBlobHandler::writeMeta(uint16_t session, uint32_t offset,
-                                const std::vector<uint8_t>& data)
+bool PcieBlobHandler::writeMeta(uint16_t /* session */, uint32_t /* offset */,
+                                const std::vector<uint8_t>& /* data */)
 {
     return false;
 }
