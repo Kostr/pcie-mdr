@@ -11,6 +11,7 @@
 #include <fstream>
 
 std::unordered_map<std::string, std::unique_ptr<PcieDevice>> pcieDevices;
+boost::asio::io_context io;
 
 bool readDataFromFlash(MDRPCIeHeader* mdrHdr, uint8_t* data)
 {
@@ -64,32 +65,14 @@ bool readDataFromFlash(MDRPCIeHeader* mdrHdr, uint8_t* data)
     return true;
 }
 
-bool updateMappingsFromFile(sdbusplus::bus_t& bus)
-{
-    uint8_t dataStorage[pcieTableStorageSize];
-    struct MDRPCIeHeader mdr2PCIe;
-
-    phosphor::logging::log<phosphor::logging::level::INFO>(
-        "updateMappingsFromFile");
-
-    bool status = readDataFromFlash(&mdr2PCIe, dataStorage);
-    if (!status)
-    {
-        phosphor::logging::log<phosphor::logging::level::ERR>(
-            "agent data sync failed - read data from flash failed");
-        return false;
-    }
-
+void updatePcieInfo(UpdateDBusData infoPcieDevs) {
     pcieDevices.clear();
-
-    if (mdr2PCIe.dataSize < sizeof(PCIHeaderMDRV))
-        return false;
-
     uint32_t offset = 0;
-    while (offset < mdr2PCIe.dataSize)
+    while (offset < infoPcieDevs.mdrHdr.dataSize)
     {
-        auto PCIheaderMDRV =
-            reinterpret_cast<const PCIHeaderMDRV*>(dataStorage + offset);
+        auto PCIheaderMDRV = reinterpret_cast<const PCIHeaderMDRV*>(
+            infoPcieDevs.dataStorage + offset);
+
         if (PCIheaderMDRV->header != 0x45494350)
         {
             phosphor::logging::log<phosphor::logging::level::ERR>(
@@ -98,7 +81,7 @@ bool updateMappingsFromFile(sdbusplus::bus_t& bus)
                                          int(PCIheaderMDRV->header)));
             break;
         }
-        uint8_t* PCIConfigSpace = dataStorage + offset + sizeof(PCIHeaderMDRV);
+        uint8_t* PCIConfigSpace = infoPcieDevs.dataStorage + offset + sizeof(PCIHeaderMDRV);
 
         offset += (sizeof(PCIHeaderMDRV) + configSpaceSize);
 
@@ -125,7 +108,7 @@ bool updateMappingsFromFile(sdbusplus::bus_t& bus)
             phosphor::logging::log<phosphor::logging::level::INFO>(
                 log_message.c_str());
             std::unique_ptr<PcieDevice> MyDev =
-                std::make_unique<PcieDevice>(bus, path);
+                std::make_unique<PcieDevice>(*infoPcieDevs.bus, path);
             MyDev->configData[PCIheaderMDRV->function] = PCIConfigSpace;
             pcieDevices.emplace(
                 path, std::forward<std::unique_ptr<PcieDevice>>(MyDev));
@@ -136,12 +119,34 @@ bool updateMappingsFromFile(sdbusplus::bus_t& bus)
     {
         pciDev.second->pcieInfoUpdate();
     }
+}
+
+bool updateMappingsFromFile(sdbusplus::bus_t& bus)
+{
+    UpdateDBusData infoPcieDevs;
+    infoPcieDevs.bus = &bus;
+
+    phosphor::logging::log<phosphor::logging::level::INFO>(
+        "updateMappingsFromFile");
+
+    bool status = readDataFromFlash(&infoPcieDevs.mdrHdr,
+                                    infoPcieDevs.dataStorage);
+    if (!status)
+    {
+        phosphor::logging::log<phosphor::logging::level::ERR>(
+            "agent data sync failed - read data from flash failed");
+        return false;
+    }
+
+    if (infoPcieDevs.mdrHdr.dataSize < sizeof(PCIHeaderMDRV))
+        return false;
+
+    io.post(std::bind(updatePcieInfo, infoPcieDevs));
     return true;
 }
 
 int main(void)
 {
-    boost::asio::io_context io;
     auto connection = std::make_shared<sdbusplus::asio::connection>(io);
     auto objServer = sdbusplus::asio::object_server(connection);
 

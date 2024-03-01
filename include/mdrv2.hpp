@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sdbusplus/bus.hpp>
 #include <cstdint>
 
 static constexpr const char* mdrType2File = "/var/lib/pcie/pcie";
@@ -15,6 +16,12 @@ struct MDRPCIeHeader
     uint32_t timestamp;
     uint32_t dataSize;
 } __attribute__((packed));
+
+struct UpdateDBusData {
+    sdbusplus::bus_t* bus;
+    MDRPCIeHeader mdrHdr;
+    uint8_t dataStorage[pcieTableStorageSize];
+};
 
 constexpr const char* PCIeMdrV2Service = "xyz.openbmc_project.PCIe.MDRV2";
 constexpr const char* PCIeMdrV2Path = "/xyz/openbmc_project/PCIe_MDRV2";
