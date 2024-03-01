@@ -7,7 +7,7 @@ static constexpr const char* mdrType2File = "/var/lib/pcie/pcie";
 static constexpr const char* pciePath = "/var/lib/pcie";
 constexpr uint8_t mdrTypeII = 2;
 
-constexpr uint32_t pcieTableStorageSize = 64 * 1024;
+constexpr uint32_t pcieTableStorageSize = 128 * 1024;
 
 struct MDRPCIeHeader
 {
