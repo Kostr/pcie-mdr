@@ -65,7 +65,8 @@ bool readDataFromFlash(MDRPCIeHeader* mdrHdr, uint8_t* data)
     return true;
 }
 
-void updatePcieInfo(UpdateDBusData infoPcieDevs) {
+void updatePcieInfo(UpdateDBusData infoPcieDevs)
+{
     pcieDevices.clear();
     uint32_t offset = 0;
     while (offset < infoPcieDevs.mdrHdr.dataSize)
@@ -81,7 +82,8 @@ void updatePcieInfo(UpdateDBusData infoPcieDevs) {
                                          int(PCIheaderMDRV->header)));
             break;
         }
-        uint8_t* PCIConfigSpace = infoPcieDevs.dataStorage + offset + sizeof(PCIHeaderMDRV);
+        uint8_t* PCIConfigSpace = infoPcieDevs.dataStorage + offset +
+                                  sizeof(PCIHeaderMDRV);
 
         offset += (sizeof(PCIHeaderMDRV) + configSpaceSize);
 

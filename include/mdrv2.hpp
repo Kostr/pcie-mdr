@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sdbusplus/bus.hpp>
+
 #include <cstdint>
 
 static constexpr const char* mdrType2File = "/var/lib/pcie/pcie";
@@ -17,7 +18,8 @@ struct MDRPCIeHeader
     uint32_t dataSize;
 } __attribute__((packed));
 
-struct UpdateDBusData {
+struct UpdateDBusData
+{
     sdbusplus::bus_t* bus;
     MDRPCIeHeader mdrHdr;
     uint8_t dataStorage[pcieTableStorageSize];
