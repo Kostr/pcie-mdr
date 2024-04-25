@@ -30,3 +30,12 @@ constexpr const char* PCIeMdrV2Path = "/xyz/openbmc_project/PCIe_MDRV2";
 constexpr const char* PCIeMdrV2Interface = "xyz.openbmc_project.PCIe_MDRV2";
 constexpr const char* PCIeMdrV2UpdateFunctionName = "UpdateMappingsFromFile";
 constexpr const char* PCIeDevicesPath = "/xyz/openbmc_project/inventory/pcie";
+
+constexpr const char* mapperBusName = "xyz.openbmc_project.ObjectMapper";
+constexpr const char* mapperPath = "/xyz/openbmc_project/object_mapper";
+constexpr const char* mapperInterface = "xyz.openbmc_project.ObjectMapper";
+
+constexpr const char* defaultInventoryPath =
+    "/xyz/openbmc_project/inventory/system";
+constexpr const char* systemInterface =
+    "xyz.openbmc_project.Inventory.Item.System";

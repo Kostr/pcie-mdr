@@ -64,7 +64,7 @@ uint8_t findPCIeCapability(uint8_t* configData)
     return 0;
 }
 
-void PcieDevice::pcieInfoUpdate()
+void PcieDevice::pcieInfoUpdate(const std::string& motherboardPath)
 {
     for (int i = 0; i < pcieFunctionsSize; i++)
     {
@@ -137,5 +137,13 @@ void PcieDevice::pcieInfoUpdate()
                 .first->second);
         functional(true);
         present(true);
+
+        if (!motherboardPath.empty())
+        {
+            std::vector<std::tuple<std::string, std::string, std::string>>
+                assocs;
+            assocs.emplace_back("chassis", "pcie_devs", motherboardPath);
+            association::associations(assocs);
+        }
     }
 }

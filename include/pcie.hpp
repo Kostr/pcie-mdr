@@ -1,6 +1,7 @@
 #pragma once
 #include "mdrv2.hpp"
 
+#include <xyz/openbmc_project/Association/Definitions/server.hpp>
 #include <xyz/openbmc_project/Inventory/Decorator/Asset/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/PCIeDevice/server.hpp>
 #include <xyz/openbmc_project/Inventory/Item/PCIeSlot/server.hpp>
@@ -66,12 +67,15 @@ using asset =
 using state = sdbusplus::server::xyz::openbmc_project::state::decorator::
     OperationalStatus;
 using item = sdbusplus::server::xyz::openbmc_project::inventory::Item;
+using association =
+    sdbusplus::server::xyz::openbmc_project::association::Definitions;
 
 class PcieDevice :
     sdbusplus::server::object_t<pcie_device>,
     sdbusplus::server::object_t<asset>,
     sdbusplus::server::object_t<state>,
-    sdbusplus::server::object_t<item>
+    sdbusplus::server::object_t<item>,
+    sdbusplus::server::object_t<association>
 {
   public:
     PcieDevice() = delete;
@@ -85,13 +89,14 @@ class PcieDevice :
         sdbusplus::server::object_t<pcie_device>(bus, objPath.c_str()),
         sdbusplus::server::object_t<asset>(bus, objPath.c_str()),
         sdbusplus::server::object_t<state>(bus, objPath.c_str()),
-        sdbusplus::server::object_t<item>(bus, objPath.c_str())
+        sdbusplus::server::object_t<item>(bus, objPath.c_str()),
+        sdbusplus::server::object_t<association>(bus, objPath.c_str())
     {
         for (int i = 0; i < pcieFunctionsSize; i++)
             configData[i] = nullptr;
     }
 
-    void pcieInfoUpdate();
+    void pcieInfoUpdate(const std::string& motherboard);
 
     std::array<uint8_t*, pcieFunctionsSize> configData;
 };
