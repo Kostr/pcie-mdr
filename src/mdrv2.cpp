@@ -143,7 +143,7 @@ bool updateMappingsFromFile(sdbusplus::bus_t& bus)
     if (infoPcieDevs.mdrHdr.dataSize < sizeof(PCIHeaderMDRV))
         return false;
 
-    io.post(std::bind(updatePcieInfo, infoPcieDevs));
+    boost::asio::post(io, std::bind(updatePcieInfo, infoPcieDevs));
     return true;
 }
 
