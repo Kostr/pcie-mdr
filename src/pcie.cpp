@@ -74,9 +74,13 @@ void PcieDevice::pcieInfoUpdate()
             continue;
 
         if (PCIheaderType0->headerType & 0x80)
-            pcie_device::deviceType("MultiFunction");
+            pcie_device::deviceType(
+                sdbusplus::server::xyz::openbmc_project::inventory::item::
+                    PCIeDevice::DeviceTypes::MultiFunction);
         else
-            pcie_device::deviceType("SingleFunction");
+            pcie_device::deviceType(
+                sdbusplus::server::xyz::openbmc_project::inventory::item::
+                    PCIeDevice::DeviceTypes::SingleFunction);
         pcie_device::setPropertyByName(
             "Function" + std::to_string(i) + "DeviceId",
             getStringFromData(sizeof(PCIheaderType0->deviceId),
